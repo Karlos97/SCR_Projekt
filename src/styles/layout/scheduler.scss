@@ -1,0 +1,58 @@
+.process__scheduler {
+  background-color: gray;
+
+  .diagram {
+    width: 100%;
+    height: 30rem;
+    background-color: gray;
+  }
+  .parameters {
+    width: 100%;
+    height: 5rem;
+    background-color: yellow;
+  }
+  .inputs{
+    height: 20rem;
+      display: flex;
+      justify-content: flex-start;
+  &__table {
+    width: 80%;
+    height: inherit;
+
+    //   background-color: white;
+    display: flex;
+    justify-content: center;
+    th {
+      border: 1px solid black;
+      background-color: white;
+    }
+    input {
+      //   width: fit-content;
+        width: 6rem;
+    }
+    table {
+    margin-top: 1rem;
+
+    //   width: 15rem;
+    }
+    .row {
+      height: 1rem;
+      // width: 30rem;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    &__head {
+      background-color: red;
+    }
+    &__row-0 {
+    }
+
+    .task {
+    }
+  }
+  &__rest{
+      height: inherit;
+      width: 20%;
+  }
+}
+}
