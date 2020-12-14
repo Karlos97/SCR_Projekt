@@ -1,58 +1,89 @@
 .process__scheduler {
-  background-color: gray;
+  background-color: $scheduler-background-color-1;
 
   .diagram {
     width: 100%;
     height: 30rem;
-    background-color: gray;
+    // background-color: $diagram-background-color-1;
   }
   .parameters {
     width: 100%;
     height: 5rem;
-    background-color: yellow;
+    // background-color: $parameters-background-color-1;
+    &__something {
+      &__descr {
+        display: inline-block;
+      }
+      &__val {
+        display: inline-block;
+      }
+    }
   }
-  .inputs{
+  .inputs {
     height: 20rem;
-      display: flex;
-      justify-content: flex-start;
-  &__table {
-    width: 80%;
-    height: inherit;
-
-    //   background-color: white;
     display: flex;
-    justify-content: center;
-    th {
-      border: 1px solid black;
-      background-color: white;
-    }
-    input {
-      //   width: fit-content;
-        width: 6rem;
-    }
-    table {
-    margin-top: 1rem;
+    justify-content: flex-start;
+    &__table {
+      width: 80%;
+      height: inherit;
 
-    //   width: 15rem;
-    }
-    .row {
-      height: 1rem;
-      // width: 30rem;
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-    &__head {
-      background-color: red;
-    }
-    &__row-0 {
-    }
+      //   background-color: white;
+      display: flex;
+      justify-content: center;
+      th,
+      td {
+        border: 1px solid black;
+        // background-color: white;
+        padding: 0 .5rem 0 .5rem;
+        // width: 3rem;
+        text-align: center;
 
-    .task {
+      }
+      // th{
+      //   font-weight: 500;
+
+      // }
+      input {
+        width: 7rem;
+        border-radius: 0;
+        border-width: 0;
+        border-color: black;
+        text-align: center;
+        background-color: transparent;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        &[type="number"] {
+          -moz-appearance: textfield;
+        }
+      }
+      table {
+        margin-top: 1rem;
+        // width: 15rem;
+      }
+      .row {
+        height: 1rem;
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      &__head {
+        background-color: red;
+      }
+      &__row-0 {
+      }
+
+      .task {
+      }
     }
-  }
-  &__rest{
+    &__buttons {
       height: inherit;
       width: 20%;
+
+      button {
+        margin: 1rem 1rem 1rem 1rem;
+      }
+    }
   }
-}
 }

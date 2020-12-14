@@ -12,7 +12,10 @@
   <body>
 <section class="process__scheduler">
 <div class="diagram"></div>
-<div class="parameters"></div>
+<div class="parameters">
+  <p class="parameters__something__descr">something time:</p>
+  <p class="parameters__something__val">1592</p>
+</div>
 <div class="inputs">
 <div class="inputs__table">
   <!-- row-0 -->
@@ -28,11 +31,11 @@
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <th><input type="number" id="releaseTime__task-0" ></th>
-      <th><input type="number" id="task" ></th>
-      <th><input type="number" id="task" ></th>
-      <th><input type="number" id="task" ></th>
+      <td>0</td>
+      <td><input type="number" id="releaseTime__task-0" ></td>
+      <td><input type="number" id="task" ></td>
+      <td><input type="number" id="task" ></td>
+      <td><input type="number" id="task" ></td>
 
     </tr>
   </tbody>
@@ -52,10 +55,10 @@
     <div class="deadline"></div>
     <div class="period"></div> -->
   </div> 
-  <div class="buttons">
-    <button type="buttons__randomTask">Losuj zadania</button>
-    <button type="buttons__addTask">Dodaj zadanie</button>
-    <button type="buttons__deleteTask">Usuń zadanie</button>
+  <div class="inputs__buttons">
+    <button type="button" id="inputs__buttons__randomTask">Losuj zadania</button>
+    <button type="button" id="inputs__buttons__addTask">Dodaj zadanie</button>
+    <button type="button" id="inputs__buttons__deleteTask">Usuń zadanie</button>
   </div>
 </div>
 </section>
