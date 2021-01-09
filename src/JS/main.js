@@ -37,7 +37,7 @@ objects.btnRandomTask.addEventListener("click", function () {
   let max = 20;
   if (objects.table.rows.length > 1) {
     for (let i = 1; i < objects.table.rows.length; i++) {
-      console.log(i);
+      // console.log(i);
       document.getElementById(`releaseTimeTask-${i}`).value =
         Math.floor(Math.random() * (max - 1)) + 1;
       document.getElementById(`executionTimeTask-${i}`).value =
