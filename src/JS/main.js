@@ -93,13 +93,13 @@ document.getElementById("btn-test").addEventListener("click", function () {
   //execTime, deadline(termin), period(okres)
   let arr = [
     [1, 4, 8],
-    [1, 2, 6],
-    [1, 2, 4],
+    [2, 4, 6],
+    [2, 2, 4],
   ];
   let arrFollowing = [
     [1, 4, 8],
-    [1, 2, 6],
-    [1, 2, 4],
+    [3, 2, 6],
+    [2, 2, 4],
   ];
   let firstProcessDeadline,
     secondProcessDeadline = 0;
@@ -109,6 +109,18 @@ document.getElementById("btn-test").addEventListener("click", function () {
 
   for (let i = 1; i <= 55; i++) {
     priority = 0;//priorytet musi być wybierany od nowa co obieg pętli
+    //zaznaczanie terminu
+for(let j = 1; j <= arr.length;j++){
+  if((i-1)%arr[j-1][1] === 0 && i-1!=0) addProcess(j, "arrowDown");
+}
+  //zaznaczanie okresu
+for(let j = 1; j <= arr.length;j++){
+  if((i-1)%arr[j-1][2] === 0 && i-1!=0) addProcess(j, "arrowUp");
+}
+
+////// w terminie funkcja musi się zmieścić, ale górny limit to okres!
+
+
     if (i < 10) {
       console.log(`czas globalny:${i}`);
       // //jeżeli wszystkie procesy poza jednym zostały zbudowane to zbuduj ostatni
@@ -141,30 +153,31 @@ document.getElementById("btn-test").addEventListener("click", function () {
       );
       //dodanie bloczka dla tej funkcji
       addProcess(priority + 1, "process");
-      arrFollowing[priority][2] -= 1;
+      //zmniejszenie wartości bloczków jakie jeszcze trzeba dodać
+      arrFollowing[priority][0] -= 1;
       // console.log(`arrFollowing:${arrFollowing}`);
 
       //dodanie bloczków odpowiednio dla pozostałych funkcji
       for (let j = 0; j < arrFollowing.length; j++) {
         if (j !== priority) addProcess(j + 1, "flat");
       }
-      //zmniejszenie się terminu o jeden dla wszystkich funkcji
+      //zmniejszenie się terminu o jeden dla wszystkich funkcji(postępowanie pętli w czasie)
       for (let j = 0; j < arrFollowing.length; j++) {
         arrFollowing[j][1] -= 1;
       }
-      //jeżeli okres jest równy = 0 -> czyli proces wykonał się w pełni
+      //jeżeli execution time jest równy = 0 -> czyli proces wykonał się w pełni
       for (let j = 0; j <= arrFollowing.length - 1; j++) {
-        if (arrFollowing[j][2] === 0) {
+        if (arrFollowing[j][0] === 0) {
           processFlag[j] = true;
           console.log(`proces ${j} wykonał się w pełni`);
           // jeżeli proces się wykonał i upłynął termin
           if (arrFollowing[j][1] <= 0) {
-            arrFollowing[j][2] = arr[j][2];
+            arrFollowing[j][0] = arr[j][0];
             arrFollowing[j][1] += arr[j][1];
 
             processFlag[j] = false;
             console.log(
-              `procesowi(licząc od 0) ${j} został dodany bazowy okres`
+              `procesowi(licząc od 0) ${j} został dodany bazowy exec time`
             );
           }
         }
