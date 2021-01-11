@@ -12,20 +12,35 @@
   <body>
     <section class="process__scheduler">
       <div class="diagram">
-        <!-- <div class="diagram__gant">
-           <img
+        <div class="diagram__gant" id="graph-1">
+          <img
             src="../img/cartesianSystem_corr.svg"
             class="diagram__gant__graph"
           />
-          <div class="diagram__gant__process"></div>
-          <div class="long-arrow-right"></div>
+          <!-- <div class="diagram__gant__process"></div>
           <div class="diagram__gant__process-gap"></div>
           <div class="diagram__gant__process-flat"></div>
-          <div class="long-arrow-right"></div>
-          <div class="long-arrow-right"></div> 
-
-        </div>  -->
+          <div class="long-arrow-right-1"></div>
+          <div class="long-arrow-right-2"></div>  -->
+        </div>
       </div>
+      <div class="diagram">
+        <div class="diagram__gant" id="graph-2">
+          <img
+            src="../img/cartesianSystem_corr.svg"
+            class="diagram__gant__graph"
+          />
+        </div>
+      </div>
+      <div class="diagram">
+        <div class="diagram__gant" id="graph-3">
+          <img
+            src="../img/cartesianSystem_corr.svg"
+            class="diagram__gant__graph"
+          />
+        </div>
+      </div>
+
       <div class="parameters">
         <p class="parameters__something__descr">something time:</p>
         <p class="parameters__something__val" id="parameters__something__val">
@@ -36,17 +51,17 @@
         <div class="inputs__table">
           <!-- row-0  -->
           <table class="row">
-            <thead>
-              <tr class="table__head">
+            <thead class="table__head">
+              <tr>
                 <th>Task</th>
-                <th>Release time</th>
+                <!-- <th>Release time</th> -->
                 <th>Execution time</th>
                 <th>Deadline</th>
                 <th>Period</th>
                 <!-- czas przetworzenia, okres, termin i priorytet, mam złe tłumaczenia -->
               </tr>
             </thead>
-            <tbody>
+            <tbody id="table__body">
               <!-- <tr id="task-0">
                 <td>0</td>
                 <td><input type="number" id="releaseTimeTask-0" /></td>
@@ -78,16 +93,39 @@
     <div class="deadline"></div>
     <div class="period"></div> -->
         </div>
-        <div class="inputs__buttons">
-          <button type="button" id="inputs__buttons__randomTask">
-            Losuj zadania
+
+        <div class="inputs__parameters">
+          <!-- <label class="inputs__parameters__list__label" for="inputs-algorithm-choice">Choose algorithm:</label>
+              <input
+            list="inputs-algorithm"
+            id="inputs-algorithm-choice"
+            name="inputs-algorithm-choice"
+            class="inputs__parameters__list"
+        /> -->
+          <label class="inputs__parameters__list__label" for="inputs-algorithm"
+            >Choose algorithm:</label
+          >
+
+          <select id="inputs-algorithm" class="inputs__parameters__list">
+            <option value="RMS" selected>RMS</option>
+            <option value="EDF">EDF</option>
+            <option value="Priority">Priority</option>
+          </select>
+
+          <button type="button" id="btn-randomTask">Losuj zadania</button>
+          <button type="button" id="btn-addTask">Dodaj zadanie</button>
+          <button type="button" id="btn-deleteTask">Usuń zadanie</button>
+          <button type="button" id="btn-test">test</button>
+
+          <!-- <button type="button" id="inputs__buttons__EDF">
+            EDF
           </button>
-          <button type="button" id="inputs__buttons__addTask">
-            Dodaj zadanie
+          <button type="button" id="inputs__buttons__RMS">
+            RMS
           </button>
-          <button type="button" id="inputs__buttons__deleteTask">
-            Usuń zadanie
-          </button>
+          <button type="button" id="inputs__buttons__priority">
+            Priority
+          </button> -->
         </div>
       </div>
     </section>

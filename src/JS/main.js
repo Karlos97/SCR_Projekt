@@ -1,7 +1,12 @@
 // import userExpensesInput from "./models/userExpensesInput.js";
 // import { chart } from "./views/chart.js";
 import { objects } from "./models/objects.js";
-import { addTask, deleteTask } from "./models/functions.js";
+import {
+  addTask,
+  addProcess,
+  deleteTask,
+  algorithmParams,
+} from "./models/functions.js";
 
 // import userExpensesInput from "./models/userExpensesInput.js";
 // import { objects } from "./models/objects.js";
@@ -26,33 +31,175 @@ import { addTask, deleteTask } from "./models/functions.js";
 //   }
 // });
 // console.log(1);
+// objects.algorithmChoice.addEventListener("click", function () {
+//   objects.algorithmChoice.value = "";
+// });
 objects.btnDeleteTask.addEventListener("click", function () {
-  if (objects.table.rows.length > 1) deleteTask(objects.table.rows.length);
+  if (objects.table.rows.length) deleteTask(objects.table.rows.length + 1);
 });
 objects.btnAddTask.addEventListener("click", function () {
-  if (objects.table.rows.length < 5) addTask(objects.table.rows.length);
-});
+  if (objects.table.rows.length < 4) addTask(objects.table.rows.length + 1);
 
+  let cells = document.querySelectorAll("td");
+  for (let cell of cells) {
+    cell.addEventListener("change", () => {
+      // console.log(document.getElementById(cell.children[0].id).value);
+      let params = algorithmParams(objects.table);
+      // console.log(params)
+      for (let i = 0; i < objects.table.rows; i++) {
+        console.log(params[0][i]);
+        if (params[0][i] > params[2][i]) console.log("exec time too big");
+      }
+      // params.forEach(el => {
+      //   console.log(el)
+      //   el.forEach(el1 => {
+      //     // console.log(el1)
+      //       }      )})
+    });
+  }
+});
+//exec time to ile jeden kwadracik zajmuje jednostek czasu
+//period to ile jednostek czasu zajmuje caly process, period nie moze byc mniejszy niz deadline
+//deadline to w ilu jednostkach czasu ma sie zamknac proces
 objects.btnRandomTask.addEventListener("click", function () {
   let max = 20;
-  if (objects.table.rows.length > 1) {
-    for (let i = 1; i < objects.table.rows.length; i++) {
-      // console.log(i);
-      document.getElementById(`releaseTimeTask-${i}`).value =
-        Math.floor(Math.random() * (max - 1)) + 1;
-      document.getElementById(`executionTimeTask-${i}`).value =
-        Math.floor(Math.random() * (max - 1)) + 1;
-      document.getElementById(`deadlineTask-${i}`).value =
-        Math.floor(Math.random() * (max - 1)) + 1;
-      document.getElementById(`periodTask-${i}`).value =
-        Math.floor(Math.random() * (max - 1)) + 1;
+  if (objects.table.rows.length >= 1) {
+    for (let i = 1; i <= objects.table.rows.length; i++) {
+      let execTime = Math.floor(Math.random() * (max - 1)) + 1;
+      let deadline = Math.floor(Math.random() * (max - 1)) + 1;
+      let period = Math.floor(Math.random() * (max - 1)) + 1;
+      if (deadline > period) deadline = period - 1;
+      if (execTime > deadline) execTime = deadline - 1;
+      execTime ? 0 : (execTime = 1);
+      deadline ? 0 : (deadline = 1);
+      period ? 0 : (period = 1);
+      document.getElementById(`executionTimeTask-${i}`).value = execTime;
+      document.getElementById(`deadlineTask-${i}`).value = deadline;
+      document.getElementById(`periodTask-${i}`).value = period;
     }
+    let params = algorithmParams(objects.table);
+    // console.log(params);
   }
   // executionTimeTask-
   // deadlineTask-
   // periodTask-
 });
 
+// co wywołuje funkcje
+// czy stopniowo w każdym przyporządkowywać, tzn 1 klocek diragram 1->2->3->4, czy
+//najpierw cały diagram 1 i później kolejny
+
+document.getElementById("btn-test").addEventListener("click", function () {
+  //execTime, deadline(termin), period(okres)
+  let arr = [
+    [1, 4, 8],
+    [1, 2, 6],
+    [1, 2, 4],
+  ];
+  let arrFollowing = [
+    [1, 4, 8],
+    [1, 2, 6],
+    [1, 2, 4],
+  ];
+  let firstProcessDeadline,
+    secondProcessDeadline = 0;
+  let processFlag = [false, false, false, false];
+  let priority = 0;
+  let globalTime = 0;
+
+  for (let i = 1; i <= 55; i++) {
+    priority = 0;//priorytet musi być wybierany od nowa co obieg pętli
+    if (i < 10) {
+      console.log(`czas globalny:${i}`);
+      // //jeżeli wszystkie procesy poza jednym zostały zbudowane to zbuduj ostatni
+      //       processFlag.forEach((el) => {
+      //         let id,
+      //           counter = 0;
+      //         if (el === true) {
+      //           counter += 1;
+      //         } else{
+      //           id = el.id;
+      //           console.log(`el:${el} id:${id}`)
+      //         }
+
+      //         if (counter === processFlag.length - 1) priority = id;
+      //       });
+      //wyłonienie funkcji o największym priorytecie
+      for (let j = 0; j < arrFollowing.length; j++) {
+        console.log(
+          `arrFollowing[j][1]:${arrFollowing[j][1]} <= arrFollowing[priority][1]:${arrFollowing[priority][1]}`
+        );
+        if (
+          arrFollowing[j][1] <= arrFollowing[priority][1] &&
+          !processFlag[j]
+        ) {
+          priority = j;
+        } 
+      }
+      console.log(
+        ` proces ${priority} ma najwyższy priorytet i termin:${arrFollowing[priority][1]} `
+      );
+      //dodanie bloczka dla tej funkcji
+      addProcess(priority + 1, "process");
+      arrFollowing[priority][2] -= 1;
+      // console.log(`arrFollowing:${arrFollowing}`);
+
+      //dodanie bloczków odpowiednio dla pozostałych funkcji
+      for (let j = 0; j < arrFollowing.length; j++) {
+        if (j !== priority) addProcess(j + 1, "flat");
+      }
+      //zmniejszenie się terminu o jeden dla wszystkich funkcji
+      for (let j = 0; j < arrFollowing.length; j++) {
+        arrFollowing[j][1] -= 1;
+      }
+      //jeżeli okres jest równy = 0 -> czyli proces wykonał się w pełni
+      for (let j = 0; j <= arrFollowing.length - 1; j++) {
+        if (arrFollowing[j][2] === 0) {
+          processFlag[j] = true;
+          console.log(`proces ${j} wykonał się w pełni`);
+          // jeżeli proces się wykonał i upłynął termin
+          if (arrFollowing[j][1] <= 0) {
+            arrFollowing[j][2] = arr[j][2];
+            arrFollowing[j][1] += arr[j][1];
+
+            processFlag[j] = false;
+            console.log(
+              `procesowi(licząc od 0) ${j} został dodany bazowy okres`
+            );
+          }
+        }
+      }
+      console.log(`tablica arrFollowing: ${arrFollowing}`);
+      console.log(`///////////////////////////////////////`);
+    }
+  }
+});
+
+//spr priorytetu
+// for (let i = 0; i < arr.length - 1; i++) {
+//   if (arr[i][1] > arr[i + 1][1]);
+//   priority = i + 1;
+//   console.log(i);
+// }
+// console.log(` proces ${priority} ma wyższy priorytet`);
+
+// addProcess(priority+1, "process");
+
+// for (let i = 0; i < arr.length; i++) {
+//   if (i !== priority) addProcess(i+1, "flat");
+// }
+
+// for (let i = 0; i < arr.length - 1; i++) {
+// arr[i][1] -=1;
+// }
+
+// globalTime+=1;
+// console.log(arr)
+// addProcess(1, "arrowUp");
+// addProcess(1, "gap");
+// addProcess(1, "flat");
+// addProcess(1, "arrowUp");
+// addProcess(1, "arrowDown");
 // objects.historyInput.addEventListener("click", function () {
 //   objects.historyInput.value = "";
 // });
