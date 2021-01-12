@@ -93,35 +93,45 @@ document.getElementById("btn-test").addEventListener("click", function () {
   //execTime, deadline(termin), period(okres)
   let arr = [
     [1, 4, 8],
-    [2, 4, 6],
+    [3, 4, 6],
     [2, 2, 4],
   ];
   let arrFollowing = [
     [1, 4, 8],
-    [3, 2, 6],
+    [3, 4, 6],
     [2, 2, 4],
   ];
-  let firstProcessDeadline,
-    secondProcessDeadline = 0;
+  // let arr = [
+  //   [1, 2, 2],
+  //   [4, 9, 9],
+  //   [6, 8, 8],
+  // ];
+  // let arrFollowing = [
+  //   [1, 2, 2],
+  //   [4, 9, 9],
+  //   [6, 8, 8],
+  // ];
+  // let firstProcessDeadline,
+  //   secondProcessDeadline = 0;
   let processFlag = [false, false, false, false];
   let priority = 0;
-  let globalTime = 0;
+  // let globalTime = 0;
 
   for (let i = 1; i <= 55; i++) {
-    priority = 0;//priorytet musi być wybierany od nowa co obieg pętli
+    priority = 0; //priorytet musi być wybierany od nowa co obieg pętli
     //zaznaczanie terminu
-for(let j = 1; j <= arr.length;j++){
-  if((i-1)%arr[j-1][1] === 0 && i-1!=0) addProcess(j, "arrowDown");
-}
-  //zaznaczanie okresu
-for(let j = 1; j <= arr.length;j++){
-  if((i-1)%arr[j-1][2] === 0 && i-1!=0) addProcess(j, "arrowUp");
-}
+    for (let j = 1; j <= arr.length; j++) {
+      if ((i - 1) % arr[j - 1][1] === 0 && i - 1 != 0)
+        addProcess(j, "arrowDown");
+    }
+    //zaznaczanie okresu
+    for (let j = 1; j <= arr.length; j++) {
+      if ((i - 1) % arr[j - 1][2] === 0 && i - 1 != 0) addProcess(j, "arrowUp");
+    }
 
-////// w terminie funkcja musi się zmieścić, ale górny limit to okres!
+    ////// w terminie funkcja musi się zmieścić, ale górny limit to okres!
 
-
-    if (i < 10) {
+    if (i < 55) {
       console.log(`czas globalny:${i}`);
       // //jeżeli wszystkie procesy poza jednym zostały zbudowane to zbuduj ostatni
       //       processFlag.forEach((el) => {
@@ -137,52 +147,97 @@ for(let j = 1; j <= arr.length;j++){
       //         if (counter === processFlag.length - 1) priority = id;
       //       });
       //wyłonienie funkcji o największym priorytecie
+      let priorityPassed = false; //czy priorytet został już nadany
       for (let j = 0; j < arrFollowing.length; j++) {
-        console.log(
-          `arrFollowing[j][1]:${arrFollowing[j][1]} <= arrFollowing[priority][1]:${arrFollowing[priority][1]}`
-        );
+        // console.log(
+        //   `arrFollowing[j][1]:${arrFollowing[j][1]} <= arrFollowing[priority][1]:${arrFollowing[priority][1]}`
+        // );
+
+        // //reset okresu
+        // if(arrFollowing[j][2]<=0){
+        //   arrFollowing[j][2] = arr[j][2];
+        //   console.log(`reset okresu procesu: ${j}`)
+        // }
+
+        //problem priorytetu, budując wszystkie klocki termin na procesie 0 jest najmniejszy, więc priorytet się nie nadpisuje
         if (
-          arrFollowing[j][1] <= arrFollowing[priority][1] &&
-          !processFlag[j]
+          arrFollowing[j][1] <= arrFollowing[priority][1] && !processFlag[j]
         ) {
           priority = j;
-        } 
+          priorityPassed = true;
+          // console.log(`priority = ${j};`)
+        }
+        //  else if (
+        //   arrFollowing[j][1] <= arrFollowing[priority][1] &&
+        //   processFlag[j] &&
+        //   j < arrFollowing.length - 1 &&
+        //   !priorityPassed
+        // ) {
+        //   priority = j + 1;
+        //   console.log(`priority = ${j}+1;`)
+        // }
+
+
+
+        // jeżeli przez całą pętlę priorytet nie został przyporządkwoany, to weź poprawkę i działaj od 1wszego elementu
+        if( !priorityPassed && j === arrFollowing.length-1){
+          priority = 1;
+        for (let g = 0; g < arrFollowing.length; g++) {
+          if (
+            arrFollowing[g][1] <= arrFollowing[priority][1] && !processFlag[g]
+          ) {
+            priority = g;
+          }
+        }
+      }
       }
       console.log(
-        ` proces ${priority} ma najwyższy priorytet i termin:${arrFollowing[priority][1]} `
+        ` proces ${priority} ma najwyższy priorytet, termin:${arrFollowing[priority][1]}, procesy wykonane: ${processFlag} `
       );
+
       //dodanie bloczka dla tej funkcji
-      addProcess(priority + 1, "process");
-      //zmniejszenie wartości bloczków jakie jeszcze trzeba dodać
-      arrFollowing[priority][0] -= 1;
-      // console.log(`arrFollowing:${arrFollowing}`);
+      for (let j = 0; j < arrFollowing.length; j++) {
+        if (!processFlag[j]) {
+          addProcess(priority + 1, "process");
+          //zmniejszenie wartości bloczków jakie jeszcze trzeba dodać
+          arrFollowing[priority][0] -= 1;
+          break;
+        }
+      }
 
       //dodanie bloczków odpowiednio dla pozostałych funkcji
       for (let j = 0; j < arrFollowing.length; j++) {
-        if (j !== priority) addProcess(j + 1, "flat");
+        if (j !== priority) addProcess(j + 1, "gap");
       }
-      //zmniejszenie się terminu o jeden dla wszystkich funkcji(postępowanie pętli w czasie)
+      //zmniejszenie okresu o jeden dla wszystkich funkcji(postępowanie pętli w czasie)
       for (let j = 0; j < arrFollowing.length; j++) {
-        arrFollowing[j][1] -= 1;
+        arrFollowing[j][2] -= 1;
+        //termin jest odejmowany tylko temu procesowi, który się nie ukończył i jego okres nie został przekroczony
+        if (!processFlag[j] && arrFollowing[j][2] > 0) {
+          arrFollowing[j][1] -= 1;
+        }
       }
       //jeżeli execution time jest równy = 0 -> czyli proces wykonał się w pełni
       for (let j = 0; j <= arrFollowing.length - 1; j++) {
         if (arrFollowing[j][0] === 0) {
           processFlag[j] = true;
           console.log(`proces ${j} wykonał się w pełni`);
-          // jeżeli proces się wykonał i upłynął termin
-          if (arrFollowing[j][1] <= 0) {
+          // jeżeli proces się wykonał, upłynął termin i upłynął okres
+          if (arrFollowing[j][1] <= 0 && arrFollowing[j][2] <= 0) {
             arrFollowing[j][0] = arr[j][0];
+            arrFollowing[j][2] = arr[j][2];
             arrFollowing[j][1] += arr[j][1];
 
             processFlag[j] = false;
             console.log(
-              `procesowi(licząc od 0) ${j} został dodany bazowy exec time`
+              `procesowi(licząc od 0) ${j} został dodany bazowy exec time i został zresetowany okres`
             );
           }
         }
       }
-      console.log(`tablica arrFollowing: ${arrFollowing}`);
+      console.log(
+        `tablica arrFollowing: ${arrFollowing},  procesy wykonane: ${processFlag} `
+      );
       console.log(`///////////////////////////////////////`);
     }
   }
