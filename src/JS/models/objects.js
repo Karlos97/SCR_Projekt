@@ -9,4 +9,5 @@ export const objects = {
   algorithmChoice: document.getElementById("inputs-algorithm"),
   btnAddTask: document.getElementById("btn-addTask"),
   btnDeleteTask: document.getElementById("btn-deleteTask"),
+  algorithmTypeInput: document.getElementById("inputs-algorithm"),
 };
