@@ -11,14 +11,6 @@
       margin-top: 2rem;
       margin-left: 7%;
       font-size: 0;
-      // .arrow {
-      //   display: flex;
-      //   align-content: flex-start;
-      //   display: inline-block;
-      //   font-size: 4rem;
-      //   z-index: 1000;
-      // }
-
       .long-arrow-right-1 {
         position: absolute;
         font-size: 0;
@@ -49,15 +41,6 @@
         transform: rotate(45deg) translate(39px, 45px);
         z-index: 1000;
       }
-      // .long-arrow-right::before {
-      //   content: "";
-      //   display: inline-block;
-      //   width: 2px;
-      //   height: 40px;
-      //   background-color: black;
-      //   transform: rotate(-45deg) translate(13.5px, 4px);
-      // }
-
       &__graph {
         position: absolute;
         width: 170rem;
@@ -91,20 +74,22 @@
     }
   }
   .parameters {
-    // width: 100%;
     height: 8rem;
     font-size: 2rem;
     margin-left: 15%;
 
-    p {
-      margin: 0;
-    }
+    // p {
+    //   margin: 0;
+    //   margin-left: 1rem;
+    // }
     &__something {
       &__descr {
         display: inline-block;
+        margin: 0 0 0 1rem;
       }
       &__val {
         display: inline-block;
+        margin: 0 1rem 0 0;
       }
     }
   }
@@ -159,23 +144,12 @@
       width: 20rem;
       margin-left: 3rem;
       &__list {
-        // padding-bottom: 0.3rem;
-        // padding-top: 0.3rem;
         margin: 0 1rem 0 1rem;
-        // margin: 0 0 0 1rem;
         height: 2rem;
         width: 15rem;
-        // background-color: $color-dark-grey-1;
-        // display: flex;
-        // justify-content: flex-end;
-        // &__history--input{
-        //   width: 16rem;
-        //   margin-right: .4rem;
-          border-radius: .4rem;
-          border-width: .1rem;
-  
-        // }
-        &__label{
+        border-radius: 0.4rem;
+        border-width: 0.1rem;
+        &__label {
           margin-left: 1rem;
         }
       }
@@ -184,39 +158,6 @@
         width: 15rem;
         font-size: 1.6rem;
       }
-
     }
   }
 }
-
-
-
-// tOgolny = 1
-// diag1:2-1 ->>najwyższy priorytet
-// diag2:9-1
-// diag3:8-1
-
-// tOgolny = 2
-// diag1: -1 + 1, zad zrobione
-// diag2: -1 
-// diag3: -1 ->>najwyższy priorytet
-
-// tOgolny = 3
-// diag1: -1 ->>najwyższy priorytet
-// diag2: -1
-// diag3: -1  wywłaszczone
-
-// tOgolny = 4
-// diag1: -1 +1 bo zad. zakonczone
-// diag2: -1
-// diag3: -1 ->>najwyższy priorytet
-
-// tOgolny = 5
-// diag1: -1 ->>najwyższy priorytet
-// diag2: -1
-// diag3: -1  wywłaszczone
-
-// tOgolny = 6
-
-
-
