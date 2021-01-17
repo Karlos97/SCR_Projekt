@@ -156,11 +156,7 @@ export function showSchedule(type, parameters) {
       for (let j = 0; j < parameters.length; j++) {
         if (
           ((i - 1) % parameters[j].deadline === 0 &&
-            i - 1 != 0 &&
-            i < parameters[j].period) ||
-          ((i - 1) % (parameters[j].deadline + parameters[j].period) === 0 &&
-            i - 1 != 0 &&
-            !tasksFollowingArr[j].done)
+            i - 1 != 0)
         ) {
           addProcess(parameters[j].id, "arrowDown");
         }
@@ -215,6 +211,14 @@ export function showSchedule(type, parameters) {
           addProcess(parameters[j].id, "arrowUp");
         }
       }
+      for (let j = 0; j < parameters.length; j++) {
+        if (
+          ((i - 1) % parameters[j].deadline === 0 &&
+            i - 1 != 0)
+        ) {
+          addProcess(parameters[j].id, "arrowDown");
+        }
+      }
       tasksFollowingArr.sort((x, y) => x.periodBase - y.periodBase);
       tasksFollowingArr.sort((x, y) => x.done - y.done);
       if (tasksFollowingArr[0].done)
@@ -251,6 +255,14 @@ export function showSchedule(type, parameters) {
       for (let j = 0; j < parameters.length; j++) {
         if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
           addProcess(parameters[j].id, "arrowUp");
+        }
+      }
+      for (let j = 0; j < parameters.length; j++) {
+        if (
+          ((i - 1) % parameters[j].deadline === 0 &&
+            i - 1 != 0)
+        ) {
+          addProcess(parameters[j].id, "arrowDown");
         }
       }
       tasksFollowingArr.sort((x, y) => y.priority - x.priority);
