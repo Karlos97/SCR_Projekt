@@ -1,5 +1,6 @@
 import { objects } from "./objects.js";
 import { cloneDeep } from "lodash";
+import "../../../img/cartesianSystem_corr.svg";
 
 //Task addition
 export function addTask(elements) {
@@ -101,7 +102,6 @@ export function algorithmParameters() {
   }
   if (correctParameters) return taskParameters;
 }
-
 export function hyperPeriod(parameters) {
   let arrPeriods = [];
   let multiplication = 1;
@@ -119,6 +119,7 @@ export function hyperPeriod(parameters) {
     }
     return c / x;
   }
+  if (parameters.length === 1) lcmVal = arrPeriods[0];
   for (let i = 1; i < parameters.length; i++) {
     if (i === 1) lcmVal = lcm(arrPeriods[i - 1], arrPeriods[i]);
     if (i === 2) lcmVal = lcm(lcmVal, arrPeriods[i]);
@@ -128,44 +129,13 @@ export function hyperPeriod(parameters) {
 }
 
 export function processorUsage(parameters) {
-  let hyperPeriod = parseInt(objects.hyperPeriod.innerHTML)
+  let hyperPeriod = parseInt(objects.hyperPeriod.innerHTML);
   let sum = 0;
   for (let i = 0; i < parameters.length; i++) {
-    sum += hyperPeriod/parameters[i].period * parameters[i].execTime
+    sum += (hyperPeriod / parameters[i].period) * parameters[i].execTime;
+  }
+  objects.processorUsage.innerHTML = parseFloat((sum / hyperPeriod).toFixed(4));
 }
-  objects.processorUsage.innerHTML = parseFloat((sum/hyperPeriod).toFixed(4));
-}
-// export function hyperPeriod(parameters) {
-//   let arrPeriods = []
-//   let r1 = 0, r2 = 0;
-//   let l;
-//   let multiplication = 1;
-// for(let i=0; i< parameters.length; i++ ){
-//   arrPeriods.push(parameters[i].period)
-//   multiplication = multiplication * parameters[i].period
-
-// }
-// l = arrPeriods.length;
-// for( let i=0;i<l;i++) {
-// r1 = arrPeriods[i] % arrPeriods[i + 1];
-// if(r1 === 0) {
-//   arrPeriods[i + 1] = (arrPeriods[i] * arrPeriods[i+1]) / arrPeriods[i + 1];
-// }
-// else {
-//     r2 = arrPeriods[i + 1] % r1;
-//     if(r2 === 0) {
-//       arrPeriods[i + 1] = (arrPeriods[i] * arrPeriods[i + 1]) / r1;
-//     }
-//     else {
-//       arrPeriods[i+1] = (arrPeriods[i] * arrPeriods[i + 1]) / r2;
-//     }
-// }
-// }
-// if (arrPeriods[l - 1] % 1 !==0) arrPeriods[l - 1] = multiplication;
-// console.log(`multipl ${multiplication} dzielnik: ${arrPeriods[l-1]}`)
-// return arrPeriods[l - 1];
-// }
-
 export function showSchedule(type, parameters) {
   //problematyczny układ danych
   //  let tasks = [
@@ -176,8 +146,7 @@ export function showSchedule(type, parameters) {
   let tasksFollowingArr = _.cloneDeep(parameters);
 
   for (let i = 1; i <= 55; i++) {
-    // console.log(`krok ${i}`);
-    // Algorytm EDF
+    //  EDF
     if (type === "EDF") {
       for (let j = 0; j < parameters.length; j++) {
         if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
@@ -200,19 +169,12 @@ export function showSchedule(type, parameters) {
       tasksFollowingArr.sort((x, y) => x.done - y.done);
       if (tasksFollowingArr[0].done)
         tasksFollowingArr.sort((x, y) => y.deadline - x.deadline);
-
       console.table(tasksFollowingArr);
-
-      //stworzenie procesu dla najwyższego priorytetu oraz odjęcie dla niego 1 execTime
       if (!tasksFollowingArr[0].done) {
         addProcess(tasksFollowingArr[0].id, "process");
-        //  tasksFollowingArr[0].period -= 1;
         tasksFollowingArr[0].execTime -= 1;
       } else addProcess(tasksFollowingArr[0].id, "gap");
-
       if (tasksFollowingArr[0].execTime === 0) tasksFollowingArr[0].done = true;
-
-      //dodanie bloczków odpowiednio dla pozostałych funkcji
       for (let j = 1; j < tasksFollowingArr.length; j++) {
         if (
           tasksFollowingArr[j].execTime !==
@@ -226,7 +188,6 @@ export function showSchedule(type, parameters) {
       }
       for (let j = 0; j < tasksFollowingArr.length; j++) {
         tasksFollowingArr[j].period -= 1;
-        // tasksFollowingArr[j].deadline -= 1;
         if (tasksFollowingArr[j].execTime > 0)
           tasksFollowingArr[j].deadline -= 1;
         if (tasksFollowingArr[j].period === 0) {
@@ -235,7 +196,6 @@ export function showSchedule(type, parameters) {
             parameters[tasksFollowingArr[j].id - 1].period;
           tasksFollowingArr[j].execTime +=
             parameters[tasksFollowingArr[j].id - 1].execTime;
-
           if (tasksFollowingArr[j].deadline < 0) {
             tasksFollowingArr[j].deadline +=
               parameters[tasksFollowingArr[j].id - 1].deadline;
@@ -248,26 +208,22 @@ export function showSchedule(type, parameters) {
       console.table(tasksFollowingArr);
     }
 
-    // Algorytm RMS
+    //  RMS
     if (type === "RMS") {
       for (let j = 0; j < parameters.length; j++) {
         if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
           addProcess(parameters[j].id, "arrowUp");
         }
       }
-
       tasksFollowingArr.sort((x, y) => x.periodBase - y.periodBase);
       tasksFollowingArr.sort((x, y) => x.done - y.done);
       if (tasksFollowingArr[0].done)
         tasksFollowingArr.sort((x, y) => y.periodBase - x.periodBase);
-
       if (!tasksFollowingArr[0].done) {
         addProcess(tasksFollowingArr[0].id, "process");
         tasksFollowingArr[0].execTime -= 1;
       } else addProcess(tasksFollowingArr[0].id, "gap");
-
       if (tasksFollowingArr[0].execTime === 0) tasksFollowingArr[0].done = true;
-
       for (let j = 1; j < tasksFollowingArr.length; j++) {
         if (
           tasksFollowingArr[j].execTime !==
@@ -290,19 +246,17 @@ export function showSchedule(type, parameters) {
         }
       }
     }
-
+    // priority
     if (type === "Priority") {
       for (let j = 0; j < parameters.length; j++) {
         if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
           addProcess(parameters[j].id, "arrowUp");
         }
       }
-
       tasksFollowingArr.sort((x, y) => y.priority - x.priority);
       tasksFollowingArr.sort((x, y) => x.done - y.done);
       if (tasksFollowingArr[0].done)
         tasksFollowingArr.sort((x, y) => x.priority - y.priority);
-
       if (!tasksFollowingArr[0].done) {
         addProcess(tasksFollowingArr[0].id, "process");
         tasksFollowingArr[0].execTime -= 1;

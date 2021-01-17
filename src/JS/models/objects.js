@@ -5,7 +5,6 @@ export const objects = {
   processorUsage: document.getElementById("processor__usage-val"),
   diagramsList: document.getElementsByClassName("diagram__gant"),
   table: document.getElementsByTagName("tbody")[0],
-  // table: document.getElementById("table__body"),
   btnRandomTask: document.getElementById("btn-randomTask"),
   algorithmChoice: document.getElementById("inputs-algorithm"),
   btnAddTask: document.getElementById("btn-addTask"),

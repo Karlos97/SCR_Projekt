@@ -6,9 +6,8 @@ import {
   algorithmParameters,
   showSchedule,
   hyperPeriod,
-  processorUsage
+  processorUsage,
 } from "./models/functions.js";
-
 function graphView() {
   let parameters = algorithmParameters();
   if (parameters) {
@@ -16,10 +15,16 @@ function graphView() {
     showSchedule(objects.algorithmTypeInput.value, parameters);
   }
 }
-
 objects.btnDeleteTask.addEventListener("click", function () {
-  if (objects.table.rows.length) deleteTask(objects.table.rows.length);
-  resetGraphs();
+  let parameters;
+  if (objects.table.rows.length) {
+    deleteTask(objects.table.rows.length);
+    resetGraphs();
+    graphView();
+    parameters = algorithmParameters();
+    hyperPeriod(parameters);
+    processorUsage(parameters);
+  }
 });
 objects.btnAddTask.addEventListener("click", function () {
   if (objects.table.rows.length < 4) {
@@ -27,7 +32,6 @@ objects.btnAddTask.addEventListener("click", function () {
     resetGraphs();
   }
 });
-
 objects.btnRandomTask.addEventListener("click", function () {
   let parameters;
   let max = 20;
@@ -37,7 +41,6 @@ objects.btnRandomTask.addEventListener("click", function () {
       let deadline = Math.floor(Math.random() * (max - 1)) + 1;
       let period = Math.floor(Math.random() * (max - 1)) + 1;
       let priority = Math.floor(Math.random() * (max - 1)) + 1;
-
       period <= 2 ? (period = 5) : false;
       deadline === 1 ? (deadline = 2) : false;
       deadline >= period ? (deadline = period - 1) : false;
@@ -53,18 +56,15 @@ objects.btnRandomTask.addEventListener("click", function () {
     parameters = algorithmParameters();
     graphView();
     hyperPeriod(parameters);
-    processorUsage(parameters)
+    processorUsage(parameters);
   }
 });
-
 objects.algorithmTypeInput.addEventListener("change", () => {
   graphView();
 });
-
 document.getElementsByTagName("tbody")[0].addEventListener("change", () => {
   let parameters = algorithmParameters();
   graphView();
   hyperPeriod(parameters);
-  processorUsage(parameters)
+  processorUsage(parameters);
 });
-
