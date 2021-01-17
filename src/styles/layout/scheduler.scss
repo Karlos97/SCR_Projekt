@@ -78,20 +78,10 @@
     font-size: 2rem;
     margin-left: 15%;
 
-    // p {
-    //   margin: 0;
-    //   margin-left: 1rem;
-    // }
-    // &__something {
       &__hyper__period, &__processor__usage {
         display: inline-block;
         margin: 0 0 0 1rem;
       }
-      // &__val {
-      //   display: inline-block;
-      //   margin: 0 1rem 0 0;
-      // }
-    // }
   }
   .inputs {
     height: 30rem;
@@ -103,8 +93,6 @@
       display: flex;
       justify-content: center;
       font-size: 1.6rem;
-      .table__head {
-      }
       th,
       td {
         border: 1px solid black;

@@ -1,4 +1,5 @@
 import { objects } from "./objects.js";
+import { cloneDeep } from "lodash";
 
 //Task addition
 export function addTask(elements) {
@@ -126,22 +127,14 @@ export function hyperPeriod(parameters) {
   objects.hyperPeriod.innerHTML = lcmVal;
 }
 
-// export function processorUsage(parameters) {
-//   let hyperPeriod = parseInt(objects.hyperPeriod.innerHTML)
-
-// ( HIPEROKRES / OKRES ZADANIA1= e1
-//   e1 * CZAS PRZETWARZANIA ZDANIA1 = KWANTY ZADANIA1
-//   KWANT ZADANIA1 + KWANT ZADANIAPOPRZEDNIEGO = KWANTY ) 
-  
-//   TO W NAWIASIE TRZEBA W PĘTLI DLA LICZBY ZADAŃ
-  
-//   KWANTY / HIPEROKRES = ZUŻYCIE PROCKA
-
-
-
-
-
-// }
+export function processorUsage(parameters) {
+  let hyperPeriod = parseInt(objects.hyperPeriod.innerHTML)
+  let sum = 0;
+  for (let i = 0; i < parameters.length; i++) {
+    sum += hyperPeriod/parameters[i].period * parameters[i].execTime
+}
+  objects.processorUsage.innerHTML = parseFloat((sum/hyperPeriod).toFixed(4));
+}
 // export function hyperPeriod(parameters) {
 //   let arrPeriods = []
 //   let r1 = 0, r2 = 0;

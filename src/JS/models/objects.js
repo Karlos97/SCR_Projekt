@@ -1,7 +1,8 @@
 export const objects = {
   diagrams: document.getElementsByClassName("diagram")[0],
   diagramsList: document.getElementsByClassName("diagram__gant"),
-  hyperPeriod: document.getElementById("parameters__hyper__period-val"),
+  hyperPeriod: document.getElementById("hyper__period-val"),
+  processorUsage: document.getElementById("processor__usage-val"),
   diagramsList: document.getElementsByClassName("diagram__gant"),
   table: document.getElementsByTagName("tbody")[0],
   // table: document.getElementById("table__body"),

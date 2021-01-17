@@ -1,6 +1,3 @@
-// import userExpensesInput from "./models/userExpensesInput.js";
-// import { chart } from "./views/chart.js";
-import { cloneDeep } from "lodash";
 import { objects } from "./models/objects.js";
 import {
   addTask,
@@ -9,6 +6,7 @@ import {
   algorithmParameters,
   showSchedule,
   hyperPeriod,
+  processorUsage
 } from "./models/functions.js";
 
 function graphView() {
@@ -55,6 +53,7 @@ objects.btnRandomTask.addEventListener("click", function () {
     parameters = algorithmParameters();
     graphView();
     hyperPeriod(parameters);
+    processorUsage(parameters)
   }
 });
 
@@ -66,10 +65,6 @@ document.getElementsByTagName("tbody")[0].addEventListener("change", () => {
   let parameters = algorithmParameters();
   graphView();
   hyperPeriod(parameters);
+  processorUsage(parameters)
 });
 
-// document.getElementById("btn-test").addEventListener("click", function () {
-//   let parameters = algorithmParameters();
-//   hyperPeriod(parameters);
-
-// })
