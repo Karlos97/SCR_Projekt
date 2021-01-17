@@ -1,5 +1,7 @@
 import { objects } from "./objects.js";
-//dodawanie zadania
+
+
+//Task addition
 export function addTask(elements) {
   let newRow = objects.table.insertRow(objects.table.rows.length);
   elements+=1;
@@ -11,7 +13,7 @@ export function addGraph(id){
   newDiv.innerHTML = `<div class="diagram__gant" id="graph-${id}" ><img src="assets/fonts/cartesianSystem_corr.[hash5].svg" class="diagram__gant__graph"  />`;
   objects.diagrams.appendChild(newDiv);
 }
-//usuwanie zadania
+//Deleting task
 export function deleteTask(elements) {
   objects.table.rows[elements - 1].remove();
   objects.diagramsList[elements - 1].remove();
@@ -24,7 +26,7 @@ export function resetGraphs(length) {
         addGraph(i)
     }
 }
-//dodwanie odpowiedniego bloczku do wykresu
+//Placing block in diagram
 export function addProcess(graphId, type) {
   let newDiv = document.createElement("div");
   if (type === "process") newDiv.className = "diagram__gant__process";
@@ -86,25 +88,35 @@ export function algorithmParameters() {
         id: i,
       };
     } else {
-      console.log(`Elements in row ${i} are incorrect`);
+      // console.log(`Elements in row ${i} are incorrect`);
       if (execTime < 0) {
         console.log(" Execution time is not correct.");
+        document.getElementById(`executionTimeTask-${i}`).style.color = "red"
       }
       if (execTime >= deadline) {
         console.log("Execution time must be lesser than deadline.");
+        document.getElementById(`executionTimeTask-${i}`).style.color = "red"
       }
       if (deadline > period) {
         console.log("Deadline must be equal or smaller than period.");
+        document.getElementById(`deadLineTask-${i}`).style.color = "red"
       }
       if (priority <= 0) {
         console.log("Priority must be bigger than 0.");
+        document.getElementById(`priorityTask-${i}`).style.color = "red"
+        
       }
 
       correctParameters = false;
       break;
     }
+    document.getElementById(`executionTimeTask-${i}`).style.color = "black"
+    document.getElementById(`executionTimeTask-${i}`).style.color = "black"
+    document.getElementById(`deadLineTask-${i}`).style.color = "black"
+    document.getElementById(`priorityTask-${i}`).style.color = "black"
+
   }
-  console.log(`Elements are correct`);
+  // console.log(`Elements are correct`);
   if (correctParameters) return taskParameters;
   // else wyrzuć błąd
   // console.table(taskParameters)
@@ -121,14 +133,14 @@ export function showSchedule(type, parameters) {
   //   { execTime: 3, periodBase: 9, period: 9, priority: 5, deadline: 9, done: false, id: 2 },
   //   { execTime: 5, periodBase: 5, period: 5, priority: 3, deadline: 5, done: false, id: 3 },
   // ];
-  let tasks = _.cloneDeep(parameters);
+  // let tasks = _.cloneDeep(parameters);
   let tasksFollowingArr = _.cloneDeep(parameters);
-  let ograniczenieTestowe = 55;
+  // let ograniczenieTestowe = 55;
   // console.table(tasks)
   // console.table(tasksFollowingArr)
 
   for (let i = 1; i <= 55; i++) {
-    console.log(`algorytm ${type} czas globalny:${i}`);
+    // console.log(`algorytm ${type} czas globalny:${i}`);
     if (type === "EDF") {
       // let tasks = [
       //   { execTime: 3, period: 12, deadline: 6, done: false, id: 1 },
@@ -139,26 +151,26 @@ export function showSchedule(type, parameters) {
 
       //zaznaczanie terminu
       // for (let j = 1; j <= arr.length; j++) {
-      //   if ((i - 1) % tasks[j-1].period === 0 && i - 1 != 0)
+      //   if ((i - 1) % parameters[j-1].period === 0 && i - 1 != 0)
       //     addProcess(j, "arrowDown");
       // }
       //zaznaczanie okresu
-      if (i < ograniczenieTestowe) {
-        for (let j = 0; j < tasks.length; j++) {
-          if ((i - 1) % tasks[j].period === 0 && i - 1 != 0) {
-            addProcess(tasks[j].id, "arrowUp");
+      // if (i < ograniczenieTestowe) {
+        for (let j = 0; j < parameters.length; j++) {
+          if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
+            addProcess(parameters[j].id, "arrowUp");
           }
         }
-        for (let j = 0; j < tasks.length; j++) {
+        for (let j = 0; j < parameters.length; j++) {
           if (
-            ((i - 1) % tasks[j].deadline === 0 &&
+            ((i - 1) % parameters[j].deadline === 0 &&
               i - 1 != 0 &&
-              i < tasks[j].period) ||
-            ((i - 1) % (tasks[j].deadline + tasks[j].period) === 0 &&
+              i < parameters[j].period) ||
+            ((i - 1) % (parameters[j].deadline + parameters[j].period) === 0 &&
               i - 1 != 0 &&
               !tasksFollowingArr[j].done)
           ) {
-            addProcess(tasks[j].id, "arrowDown");
+            addProcess(parameters[j].id, "arrowDown");
           }
         }
         ////poprawić termin, bo działa źle, pojawia się jak okres a powinien pojawiać się ileś czasu po okresie
@@ -167,7 +179,7 @@ export function showSchedule(type, parameters) {
         if (tasksFollowingArr[0].done)
           tasksFollowingArr.sort((x, y) => y.deadline - x.deadline);
 
-        console.table(tasksFollowingArr);
+        // console.table(tasksFollowingArr);
 
         //stworzenie procesu dla najwyższego priorytetu oraz odjęcie dla niego 1 execTime
         if (!tasksFollowingArr[0].done) {
@@ -183,15 +195,15 @@ export function showSchedule(type, parameters) {
         for (let j = 1; j < tasksFollowingArr.length; j++) {
           if (
             tasksFollowingArr[j].execTime !==
-              tasks[tasksFollowingArr[j].id - 1].execTime &&
+              parameters[tasksFollowingArr[j].id - 1].execTime &&
             tasksFollowingArr[j].execTime > 0 &&
             tasksFollowingArr[j].execTime %
-              tasks[tasksFollowingArr[j].id - 1].execTime
+              parameters[tasksFollowingArr[j].id - 1].execTime
           ) {
             addProcess(tasksFollowingArr[j].id, "flat");
           } else addProcess(tasksFollowingArr[j].id, "gap");
         }
-        // if(tasksFollowingArr[j-1].period!== tasks[tasksFollowingArr[j-1].id-1].period) addProcess(tasksFollowingArr[j].id, "gap");
+        // if(tasksFollowingArr[j-1].period!== parameters[tasksFollowingArr[j-1].id-1].period) addProcess(tasksFollowingArr[j].id, "gap");
         // else addProcess(tasksFollowingArr[j].id, "flat");
         //zmniejszenie okresu o jeden dla wszystkich funkcji(postępowanie pętli w czasie)
         for (let j = 0; j < tasksFollowingArr.length; j++) {
@@ -202,37 +214,37 @@ export function showSchedule(type, parameters) {
           if (tasksFollowingArr[j].period === 0) {
             tasksFollowingArr[j].done = false;
             tasksFollowingArr[j].period =
-              tasks[tasksFollowingArr[j].id - 1].period;
+              parameters[tasksFollowingArr[j].id - 1].period;
             tasksFollowingArr[j].execTime +=
-              tasks[tasksFollowingArr[j].id - 1].execTime;
-            //  tasksFollowingArr[j].deadline += tasks[tasksFollowingArr[j].id-1].deadline;
+              parameters[tasksFollowingArr[j].id - 1].execTime;
+            //  tasksFollowingArr[j].deadline += parameters[tasksFollowingArr[j].id-1].deadline;
             if (tasksFollowingArr[j].deadline < 0) {
               tasksFollowingArr[j].deadline +=
-                tasks[tasksFollowingArr[j].id - 1].deadline;
+              parameters[tasksFollowingArr[j].id - 1].deadline;
             } else {
               tasksFollowingArr[j].deadline =
-                tasks[tasksFollowingArr[j].id - 1].deadline;
+              parameters[tasksFollowingArr[j].id - 1].deadline;
             }
-            console.log(
-              `task ${tasksFollowingArr[j].id} dostaje od nowa okres ${
-                tasks[tasksFollowingArr[j].id - 1].period
-              } i termin: ${tasks[tasksFollowingArr[j].id - 1].deadline}`
-            );
+            // console.log(
+            //   `task ${tasksFollowingArr[j].id} dostaje od nowa okres ${
+            //     parameters[tasksFollowingArr[j].id - 1].period
+            //   } i termin: ${parameters[tasksFollowingArr[j].id - 1].deadline}`
+            // );
           }
         }
-        console.log(`///////////////////////////////////////`);
+        // console.log(`///////////////////////////////////////`);
       }
       // }
-    }
+    // }
     // Algorytm RMS
     if (type === "RMS") {
       // for (let i = 1; i <= 55; i++) {
-      if (i < ograniczenieTestowe) {
+      // if (i < ograniczenieTestowe) {
         // console.log(`algorytm ${type} czas globalny:${i}`);
 
-        for (let j = 0; j < tasks.length; j++) {
-          if ((i - 1) % tasks[j].period === 0 && i - 1 != 0) {
-            addProcess(tasks[j].id, "arrowUp");
+        for (let j = 0; j < parameters.length; j++) {
+          if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
+            addProcess(parameters[j].id, "arrowUp");
           }
         }
 
@@ -242,7 +254,7 @@ export function showSchedule(type, parameters) {
         if (tasksFollowingArr[0].done)
           tasksFollowingArr.sort((x, y) => y.periodBase - x.periodBase);
 
-        console.table(tasksFollowingArr);
+        // console.table(tasksFollowingArr);
 
         //stworzenie procesu dla najwyższego priorytetu oraz odjęcie dla niego 1 execTime
         if (!tasksFollowingArr[0].done) {
@@ -257,15 +269,15 @@ export function showSchedule(type, parameters) {
         for (let j = 1; j < tasksFollowingArr.length; j++) {
           if (
             tasksFollowingArr[j].execTime !==
-              tasks[tasksFollowingArr[j].id - 1].execTime &&
+            parameters[tasksFollowingArr[j].id - 1].execTime &&
             tasksFollowingArr[j].execTime > 0 &&
             tasksFollowingArr[j].execTime %
-              tasks[tasksFollowingArr[j].id - 1].execTime
+            parameters[tasksFollowingArr[j].id - 1].execTime
           ) {
             addProcess(tasksFollowingArr[j].id, "flat");
           } else addProcess(tasksFollowingArr[j].id, "gap");
         }
-        // if(tasksFollowingArr[j-1].period!== tasks[tasksFollowingArr[j-1].id-1].period) addProcess(tasksFollowingArr[j].id, "gap");
+        // if(tasksFollowingArr[j-1].period!== parameters[tasksFollowingArr[j-1].id-1].period) addProcess(tasksFollowingArr[j].id, "gap");
         // else addProcess(tasksFollowingArr[j].id, "flat");
         //zmniejszenie okresu o jeden dla wszystkich funkcji(postępowanie pętli w czasie)
         for (let j = 0; j < tasksFollowingArr.length; j++) {
@@ -273,20 +285,20 @@ export function showSchedule(type, parameters) {
           if (tasksFollowingArr[j].period === 0) {
             tasksFollowingArr[j].done = false;
             tasksFollowingArr[j].period =
-              tasks[tasksFollowingArr[j].id - 1].period;
+            parameters[tasksFollowingArr[j].id - 1].period;
             tasksFollowingArr[j].execTime +=
-              tasks[tasksFollowingArr[j].id - 1].execTime;
+            parameters[tasksFollowingArr[j].id - 1].execTime;
 
-            console.log(
-              `task ${tasksFollowingArr[j].id} dostaje od nowa okres ${
-                tasks[tasksFollowingArr[j].id - 1].period
-              }`
-            );
+            // console.log(
+            //   `task ${tasksFollowingArr[j].id} dostaje od nowa okres ${
+            //     parameters[tasksFollowingArr[j].id - 1].period
+            //   }`
+            // );
           }
         }
-        console.log(`///////////////////////////////////////`);
+        // console.log(`///////////////////////////////////////`);
       }
-    }
+    // }
 
     // }
     //////////// Działający algorytm priorytetowy
@@ -301,16 +313,16 @@ export function showSchedule(type, parameters) {
       // for (let i = 1; i <= 55; i++) {
       //zaznaczanie terminu
       // for (let j = 1; j <= arr.length; j++) {
-      //   if ((i - 1) % tasks[j-1].period === 0 && i - 1 != 0)
+      //   if ((i - 1) % parameters[j-1].period === 0 && i - 1 != 0)
       //     addProcess(j, "arrowDown");
       // }
       //zaznaczanie okresu
-      if (i < ograniczenieTestowe) {
+      // if (i < ograniczenieTestowe) {
         // console.log(`algorytm ${type} czas globalny:${i}`);
 
-        for (let j = 0; j < tasks.length; j++) {
-          if ((i - 1) % tasks[j].period === 0 && i - 1 != 0) {
-            addProcess(tasks[j].id, "arrowUp");
+        for (let j = 0; j < parameters.length; j++) {
+          if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
+            addProcess(parameters[j].id, "arrowUp");
           }
         }
 
@@ -319,7 +331,7 @@ export function showSchedule(type, parameters) {
         if (tasksFollowingArr[0].done)
           tasksFollowingArr.sort((x, y) => x.priority - y.priority);
 
-        console.table(tasksFollowingArr);
+        // console.table(tasksFollowingArr);
 
         //stworzenie procesu dla najwyższego priorytetu oraz odjęcie dla niego 1 execTime
         if (!tasksFollowingArr[0].done) {
@@ -334,15 +346,15 @@ export function showSchedule(type, parameters) {
         for (let j = 1; j < tasksFollowingArr.length; j++) {
           if (
             tasksFollowingArr[j].execTime !==
-              tasks[tasksFollowingArr[j].id - 1].execTime &&
+              parameters[tasksFollowingArr[j].id - 1].execTime &&
             tasksFollowingArr[j].execTime > 0 &&
             tasksFollowingArr[j].execTime %
-              tasks[tasksFollowingArr[j].id - 1].execTime
+              parameters[tasksFollowingArr[j].id - 1].execTime
           ) {
             addProcess(tasksFollowingArr[j].id, "flat");
           } else addProcess(tasksFollowingArr[j].id, "gap");
         }
-        // if(tasksFollowingArr[j-1].period!== tasks[tasksFollowingArr[j-1].id-1].period) addProcess(tasksFollowingArr[j].id, "gap");
+        // if(tasksFollowingArr[j-1].period!== parameters[tasksFollowingArr[j-1].id-1].period) addProcess(tasksFollowingArr[j].id, "gap");
         // else addProcess(tasksFollowingArr[j].id, "flat");
         //zmniejszenie okresu o jeden dla wszystkich funkcji(postępowanie pętli w czasie)
         for (let j = 0; j < tasksFollowingArr.length; j++) {
@@ -350,19 +362,19 @@ export function showSchedule(type, parameters) {
           if (tasksFollowingArr[j].period === 0) {
             tasksFollowingArr[j].done = false;
             tasksFollowingArr[j].period =
-              tasks[tasksFollowingArr[j].id - 1].period;
+              parameters[tasksFollowingArr[j].id - 1].period;
             tasksFollowingArr[j].execTime +=
-              tasks[tasksFollowingArr[j].id - 1].execTime;
+              parameters[tasksFollowingArr[j].id - 1].execTime;
 
-            console.log(
-              `task ${tasksFollowingArr[j].id} dostaje od nowa okres ${
-                tasks[tasksFollowingArr[j].id - 1].period
-              }`
-            );
+            // console.log(
+            //   `task ${tasksFollowingArr[j].id} dostaje od nowa okres ${
+            //     parameters[tasksFollowingArr[j].id - 1].period
+            //   }`
+            // );
           }
         }
-        console.log(`///////////////////////////////////////`);
+        // console.log(`///////////////////////////////////////`);
       }
     }
   }
-}
+// }
