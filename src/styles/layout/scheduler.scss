@@ -82,16 +82,16 @@
     //   margin: 0;
     //   margin-left: 1rem;
     // }
-    &__something {
-      &__descr {
+    // &__something {
+      &__hyper__period, &__processor__usage {
         display: inline-block;
         margin: 0 0 0 1rem;
       }
-      &__val {
-        display: inline-block;
-        margin: 0 1rem 0 0;
-      }
-    }
+      // &__val {
+      //   display: inline-block;
+      //   margin: 0 1rem 0 0;
+      // }
+    // }
   }
   .inputs {
     height: 30rem;

@@ -31,6 +31,7 @@ objects.btnAddTask.addEventListener("click", function () {
 });
 
 objects.btnRandomTask.addEventListener("click", function () {
+  let parameters;
   let max = 20;
   if (objects.table.rows.length >= 1) {
     for (let i = 1; i <= objects.table.rows.length; i++) {
@@ -39,21 +40,21 @@ objects.btnRandomTask.addEventListener("click", function () {
       let period = Math.floor(Math.random() * (max - 1)) + 1;
       let priority = Math.floor(Math.random() * (max - 1)) + 1;
 
-
-      period <= 2 ? period = 5 : false;
-      deadline === 1 ? deadline = 2 : false
-      deadline >= period ? deadline = period - 1 : false
-      execTime >= deadline ? execTime = deadline - 1 : false
-      priority <= 0  ? priority = 1 : false
-      execTime <= 0 ? execTime = 1 : false;
-      deadline <= 0 ? deadline = 1 : false;
+      period <= 2 ? (period = 5) : false;
+      deadline === 1 ? (deadline = 2) : false;
+      deadline >= period ? (deadline = period - 1) : false;
+      execTime >= deadline ? (execTime = deadline - 1) : false;
+      priority <= 0 ? (priority = 1) : false;
+      execTime <= 0 ? (execTime = 1) : false;
+      deadline <= 0 ? (deadline = 1) : false;
       document.getElementById(`executionTimeTask-${i}`).value = execTime;
       document.getElementById(`deadLineTask-${i}`).value = deadline;
       document.getElementById(`periodTask-${i}`).value = period;
       document.getElementById(`priorityTask-${i}`).value = priority;
     }
-  graphView();
-
+    parameters = algorithmParameters();
+    graphView();
+    hyperPeriod(parameters);
   }
 });
 
@@ -62,15 +63,13 @@ objects.algorithmTypeInput.addEventListener("change", () => {
 });
 
 document.getElementsByTagName("tbody")[0].addEventListener("change", () => {
+  let parameters = algorithmParameters();
   graphView();
+  hyperPeriod(parameters);
 });
 
+// document.getElementById("btn-test").addEventListener("click", function () {
+//   let parameters = algorithmParameters();
+//   hyperPeriod(parameters);
 
-
-
-document.getElementById("btn-test").addEventListener("click", function () {
-  let parameters = algorithmParameters();
-  let hyperPeriodx = hyperPeriod(parameters);
-  console.log(hyperPeriodx)
-
-})
+// })

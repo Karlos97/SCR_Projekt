@@ -109,8 +109,6 @@ export function hyperPeriod(parameters) {
     arrPeriods.push(parameters[i].period);
     multiplication = multiplication * parameters[i].period;
   }
-  // l = arrPeriods.length;
-
   function lcm(x, y) {
     let c = x * y;
     while (y) {
@@ -122,11 +120,28 @@ export function hyperPeriod(parameters) {
   }
   for (let i = 1; i < parameters.length; i++) {
     if (i === 1) lcmVal = lcm(arrPeriods[i - 1], arrPeriods[i]);
-    if (i === 2) lcmVal = lcm(xxx, arrPeriods[i]);
-    if (i === 3) lcmVal = lcm(xxx, arrPeriods[i]);
+    if (i === 2) lcmVal = lcm(lcmVal, arrPeriods[i]);
+    if (i === 3) lcmVal = lcm(lcmVal, arrPeriods[i]);
   }
-  return lcmVal;
+  objects.hyperPeriod.innerHTML = lcmVal;
 }
+
+// export function processorUsage(parameters) {
+//   let hyperPeriod = parseInt(objects.hyperPeriod.innerHTML)
+
+// ( HIPEROKRES / OKRES ZADANIA1= e1
+//   e1 * CZAS PRZETWARZANIA ZDANIA1 = KWANTY ZADANIA1
+//   KWANT ZADANIA1 + KWANT ZADANIAPOPRZEDNIEGO = KWANTY ) 
+  
+//   TO W NAWIASIE TRZEBA W PĘTLI DLA LICZBY ZADAŃ
+  
+//   KWANTY / HIPEROKRES = ZUŻYCIE PROCKA
+
+
+
+
+
+// }
 // export function hyperPeriod(parameters) {
 //   let arrPeriods = []
 //   let r1 = 0, r2 = 0;
