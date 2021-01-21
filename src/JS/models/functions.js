@@ -147,20 +147,15 @@ export function showSchedule(type, parameters) {
 
   for (let i = 1; i <= 55; i++) {
     //  EDF
+    for (let j = 0; j < parameters.length; j++) {
+      if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
+        addProcess(parameters[j].id, "arrowUp");
+      }
+       if (((i-1)  < parameters[j].period   && (i-1)  === parameters[j].deadline && i-1 > 0) || ((i-1)  >= parameters[j].period &&((i-1)%parameters[j].period)!==0 && ((i-1)%parameters[j].period)/parameters[j].deadline===1 ))  {
+        addProcess(parameters[j].id, "arrowDown");
+      } 
+    }
     if (type === "EDF") {
-      for (let j = 0; j < parameters.length; j++) {
-        if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
-          addProcess(parameters[j].id, "arrowUp");
-        }
-      }
-      for (let j = 0; j < parameters.length; j++) {
-        if (
-          ((i - 1) % parameters[j].deadline === 0 &&
-            i - 1 != 0)
-        ) {
-          addProcess(parameters[j].id, "arrowDown");
-        }
-      }
       tasksFollowingArr.sort((x, y) => x.deadline - y.deadline);
       tasksFollowingArr.sort((x, y) => x.done - y.done);
       if (tasksFollowingArr[0].done)
@@ -206,19 +201,6 @@ export function showSchedule(type, parameters) {
 
     //  RMS
     if (type === "RMS") {
-      for (let j = 0; j < parameters.length; j++) {
-        if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
-          addProcess(parameters[j].id, "arrowUp");
-        }
-      }
-      for (let j = 0; j < parameters.length; j++) {
-        if (
-          ((i - 1) % parameters[j].deadline === 0 &&
-            i - 1 != 0)
-        ) {
-          addProcess(parameters[j].id, "arrowDown");
-        }
-      }
       tasksFollowingArr.sort((x, y) => x.periodBase - y.periodBase);
       tasksFollowingArr.sort((x, y) => x.done - y.done);
       if (tasksFollowingArr[0].done)
@@ -252,19 +234,6 @@ export function showSchedule(type, parameters) {
     }
     // priority
     if (type === "Priority") {
-      for (let j = 0; j < parameters.length; j++) {
-        if ((i - 1) % parameters[j].period === 0 && i - 1 != 0) {
-          addProcess(parameters[j].id, "arrowUp");
-        }
-      }
-      for (let j = 0; j < parameters.length; j++) {
-        if (
-          ((i - 1) % parameters[j].deadline === 0 &&
-            i - 1 != 0)
-        ) {
-          addProcess(parameters[j].id, "arrowDown");
-        }
-      }
       tasksFollowingArr.sort((x, y) => y.priority - x.priority);
       tasksFollowingArr.sort((x, y) => x.done - y.done);
       if (tasksFollowingArr[0].done)
