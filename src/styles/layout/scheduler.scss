@@ -1,8 +1,12 @@
 .process__scheduler {
-  // background-color: $scheduler-background-color-1;
-
+&__header-top{
+display: flex;
+justify-content: center;
+font-size: 4rem;
+}
   .diagram {
     width: 100%;
+    width: 185rem;
     height: 50rem;
 
     &__gant {
@@ -54,7 +58,7 @@
         display: flex;
         justify-content: flex-start;
         height: 4rem;
-        width: 2.96rem;
+        width: 2.965rem;
         display: inline-block;
         margin-top: 3rem;
         z-index: 15;
@@ -137,7 +141,8 @@
         width: 15rem;
         border-radius: 0.4rem;
         border-width: 0.1rem;
-        &__label {
+      text-align: center;
+      &__label {
           margin-left: 1rem;
         }
       }
